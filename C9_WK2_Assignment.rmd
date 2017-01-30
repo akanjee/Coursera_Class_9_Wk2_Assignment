@@ -1,0 +1,60 @@
+---
+title: "Coursera Data Products - Week 2 Assignment"
+author: "Amyn"
+date: '2017-01-29'
+output: html_document
+---
+
+# Overview
+* The following program will provide a comparison of the value of the 7 Canadian NHL teams
+* When the user clicks on the circle the teams logo will be displayed
+* Team Logo's have been sourced from Sportslogos.net (http://www.sportslogos.net)
+* Team Values are based on Forbes 2016 team valutions (http://www.forbes.com/nhl-valuations/#77a09b203ece)
+* This map was created on January 30th, 2017
+
+# Code
+
+```{r}
+
+### Build a data frame that contains - Lat & Long for the teams, Team name, URL for Team Logo, Value
+
+### Load Leaflet
+#install.packages("leaflet")
+library(leaflet)
+
+### Create the data set with the information
+
+### Create Latitude & Longitude Vectors
+Team_Lat <-c(43.6435,45.4961,45.2969,49.2778,53.5470,51.0374,49.8926)
+Team_Long <-c(-79.3791,-73.5693,-75.9268,-123.1088,-113.4978,-114.0519,-97.1437)
+
+### Create a list of the team names
+Team_Name <-c("Toronto Maple Leafs", "Montreal Canadians", "Ottawa Senators", "Vancouver Canucks", "Edmonton Oilers", "Calgary Flames", "Winnipeg Jets")
+
+### Create a list of URLs to the Team Icons
+Team_Icon <-c(
+    "http://content.sportslogos.net/logos/1/28/thumbs/2887612017.gif",
+    "http://content.sportslogos.net/logos/1/16/thumbs/124.gif",
+    "http://content.sportslogos.net/logos/1/21/thumbs/2bkf2l3xyxi5p0cavbj8.gif",
+    "http://content.sportslogos.net/logos/1/29/thumbs/tlxz9higxwygaehl0j5h.gif",
+    "http://content.sportslogos.net/logos/1/12/thumbs/6cphie5heyvfwn6lbzfowe61h.gif",
+    "http://content.sportslogos.net/logos/1/5/thumbs/50.gif",
+    "http://content.sportslogos.net/logos/1/3050/thumbs/z9qyy9xqoxfjn0njxgzoy2rwk.gif"
+  )
+### Create a list of the Team Values based on Forbes 2016 estimates
+Team_Value <-c(1.15,1.18, 0.37, 0.75,0.455, 0.435, 0.350)
+
+### Combin the lists into a single data frame and add column names
+Team_Info = data.frame(Team_Lat,Team_Long,Team_Name,Team_Icon,Team_Value)
+colnames(Team_Info) <- c("Latitude","Longitude","Team","Logo","Team_Value_In_Billions")
+
+### Display the information
+Team_Info
+
+### Create the map using Leaflet
+map <-leaflet() %>%
+    addTiles() %>%
+    addCircleMarkers(lat = Team_Info[,1], lng = Team_Info[,2], radius = Team_Info[,5]*50, weight=1, popup=paste0("<img src = ", Team_Info[,4], ">")) 
+map
+
+```
